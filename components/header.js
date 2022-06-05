@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     },
     appbarDeskop: {
         backgroundColor: '#f8f8f8',
-        color: '#fff',
+        //color: '#f8f8f8',
     },
     appbarMain: {
         backgroundColor: '#2d2d2d',
