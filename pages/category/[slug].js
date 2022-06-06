@@ -1,8 +1,9 @@
 import { Card, CardContent, CardMedia, Typography, Grid, Container } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import Header from '../components/header';
+import Header from '../../components/header';
 import Link from 'next/link';
 import Box from '@material-ui/core/Box';
+import { useRouter } from 'next/router';
 
 const useStyles = makeStyles((theme) => ({
   example: {
@@ -29,6 +30,12 @@ const useStyles = makeStyles((theme) => ({
 function Home({ posts, categories }) {
 
   const classes = useStyles();
+  const router = useRouter();
+
+  if (router.isFallback) {
+    return <div>Loading...</div>;
+  }
+
 
   return (
     <>
@@ -64,8 +71,18 @@ function Home({ posts, categories }) {
     </>
   )
 }
-export async function getStaticProps() {
-  const res = await fetch("http://localhost:8000/api/");
+
+export async function getStaticPaths() {
+  return {
+    paths: [{ params: { slug: 'shoes' } }],
+    fallback: true,
+  };
+}
+
+
+
+export async function getStaticProps({ params }) {
+  const res = await fetch(`http://localhost:8000/api/category/${params.slug}`);
   const posts = await res.json();
 
   const ress = await fetch("http://localhost:8000/api/category/");
